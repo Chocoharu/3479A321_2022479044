@@ -8,6 +8,12 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+
+  //ALVARO,
+  //Por favor regularice lo relacionado con ejecutar en el Emulador de Android. Persiste su error.
+  // Ahora ya puede continuar con el proyecto, cuando ocurra algo similar usted puede hacer el clean (elimina todos los arhcivos que se generan dentro de un build) y ejecutar nuevamente.
+  //Que tenga una buena tarde.
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
