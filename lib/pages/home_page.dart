@@ -1,20 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'detail_page.dart';
+//import 'about_page.dart';
 
 final logger = Logger();
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
 
   final String title;
 
@@ -27,77 +20,124 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _incrementCounter() {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
       _counter++;
     });
   }
+  void _decrementCounter() {
+    setState(() {
+      if (_counter > 0) _counter--;
+    });
+  }
+  void _resetCounter() {
+    setState(() {
+      _counter = 0;
+    });
+  }
+  String _getResultMessage() {
+    if (_counter >= 10) {
+      return 'Victoria';
+    } else if (_counter == 5) {
+      return 'Derrota';
+    } else {
+      return 'Sigue jugando...';
+    }
+  }
+  Widget _getResultIcon(){
+    if(_counter==5){
+      return SvgPicture.asset(
+        'asset/icons/Defeat.svg',
+        semanticsLabel: 'Acme Logo',
+        height: 100,
+      );
+    }else if(_counter >=10 )
+    {
+      return  SvgPicture.asset(
+        'asset/icons/Victory.svg',
+        semanticsLabel: 'Acme Logo',
+        height: 100,
+      );
+    }else{
+      return SvgPicture.asset(
+        'asset/icons/GameIcon.svg',
+        semanticsLabel: 'Acme Logo',
+        height: 100,
+      );
+    }
+  }
 
-  @override
+    @override
   Widget build(BuildContext context) {
     logger.i("MyHomePage is working!");
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
         child: Card(
           elevation: 20,
-          child: Column(
-            
-            // Column is also a layout widget. It takes a list of children and
-            // arranges them vertically. By default, it sizes itself to fit its
-            // children horizontally, and tries to be as tall as its parent.
-            //
-            // Column has various properties to control how it sizes itself and
-            // how it positions its children. Here we use mainAxisAlignment to
-            // center the children vertically; the main axis here is the vertical
-            // axis because Columns are vertical (the cross axis would be
-            // horizontal).
-            //
-            // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-            // action in the IDE, or press "p" in the console), to see the
-            // wireframe for each widget.
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              SvgPicture.asset(
-                'asset/icons/GameIcon.svg',
-                semanticsLabel: 'Acme Logo'
-              ),
-              const Text(
-                'You have pushed the button this many times:',
-                style: TextStyle( fontFamily: 'Choco Shake'),
-              ),
-              Text(
-                '$_counter',
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
-            ],
+          margin: const EdgeInsets.all(16.0),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                _getResultIcon(),
+                const SizedBox(height: 16.0),
+                Text(
+                  'Resultado: ${_getResultMessage()}',
+                  style: const TextStyle(
+                    fontFamily: 'Choco Shake',
+                    fontSize: 24,
+                  ),
+                ),
+                const SizedBox(height: 16.0),
+                Text(
+                  '$_counter',
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
+                const SizedBox(height: 16.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      onPressed: _resetCounter,
+                      child: const Text('Reiniciar'),
+                    ),
+                    const SizedBox(width: 8.0),
+                    ElevatedButton(
+                      onPressed: _decrementCounter,
+                      child: const Text('-'),
+                    ),
+                    const SizedBox(width: 8.0),
+                    
+                    ElevatedButton(
+                      onPressed: _incrementCounter,
+                      child: const Text('+'),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const DetailPage(),
+                          ),
+                        );
+                      },
+                      child: const Text('Ir a Detalle'),
+                      )
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
