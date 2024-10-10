@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/pages/about_page.dart';
 import 'package:logger/logger.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'detail_page.dart';
@@ -17,6 +18,27 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+
+  int _selectedIndex = 0;
+  
+  static const List<Widget> _widgetOptions = <Widget>[
+    AboutPage(),
+
+    DetailPage(),
+    
+    Text(
+      'Index 2: School',
+      style: optionStyle,
+    ),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+  static const TextStyle optionStyle =
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
   void _incrementCounter() {
     setState(() {
@@ -70,8 +92,17 @@ class _MyHomePageState extends State<MyHomePage> {
     logger.i("MyHomePage is working!");
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
+        leading: Builder(
+          builder: (context) {
+            return IconButton(
+              icon: const Icon(Icons.menu),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+            );
+          },
+        ),
       ),
       body: Center(
         child: Card(
@@ -132,10 +163,60 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: const Text('Ir a Detalle'),
                       )
                   ],
-                )
+                ),
+                _widgetOptions[_selectedIndex],
               ],
             ),
           ),
+          
+        ),
+        
+      ),
+      drawer: Drawer(
+        // Add a ListView to the drawer. This ensures the user can scroll
+        // through the options in the drawer if there isn't enough vertical
+        // space to fit everything.
+        child: ListView(
+          // Important: Remove any padding from the ListView.
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Text('Drawer Header'),
+            ),
+            ListTile(
+              title: const Text('Home'),
+              selected: _selectedIndex == 0,
+              onTap: () {
+                // Update the state of the app
+                _onItemTapped(0);
+                // Then close the drawer
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('Business'),
+              selected: _selectedIndex == 1,
+              onTap: () {
+                // Update the state of the app
+                _onItemTapped(1);
+                // Then close the drawer
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('School'),
+              selected: _selectedIndex == 2,
+              onTap: () {
+                // Update the state of the app
+                _onItemTapped(2);
+                // Then close the drawer
+                Navigator.pop(context);
+              },
+            ),
+          ],
         ),
       ),
     );
