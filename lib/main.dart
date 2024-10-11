@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
-//import 'package:flutter_application_1/pages/about_page.dart';
+import 'package:flutter_application_1/pages/app_data.dart';
 import 'package:logger/logger.dart';
+import 'package:provider/provider.dart';
 import 'pages/home_page.dart';
 
 final logger = Logger();
 
 void main() {
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(
+      create: (context) => AppData(),
+      child: const MyApp(),
+    ),);
 
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
   
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
      logger.i("Logger is working!");
