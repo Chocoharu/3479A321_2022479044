@@ -12,11 +12,61 @@ class MyHomePage extends StatefulWidget {
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  @override
+  State<MyHomePage> createState() {
+    logger.i("State Created");
+    return _MyHomePageState();
+  }
 }
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    logger.i("State Initated");
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    logger.i("Change on Dependencies");
+  }
+
+  @override
+  void didUpdateWidget(covariant MyHomePage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    logger.i("Widget Updated");
+  }
+
+  @override
+  void setState(VoidCallback fn) {
+    if (mounted) {
+      logger.i("State and widget setted");
+      super.setState(fn);
+    } else {
+      logger.w("State setted and widget doesn't setted");
+    }
+  }
+
+  @override
+  void deactivate() {
+    super.deactivate();
+    logger.i("Widget removed");
+  }
+
+  @override
+  void dispose() {
+    logger.i("Widget removed permanently");
+    super.dispose();
+  }
+
+  @override
+  void reassemble() {
+    super.reassemble();
+    logger.i("reassemble() llamado, generalmente durante hot reload");
+  }
 
   void _incrementCounter() {
     setState(() {

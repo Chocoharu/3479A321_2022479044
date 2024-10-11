@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/pages/about_page.dart';
 import 'package:logger/logger.dart';
 import 'pages/home_page.dart';
 
